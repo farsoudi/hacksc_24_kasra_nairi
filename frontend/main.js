@@ -1,6 +1,8 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
+require('dotenv').config();
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -11,6 +13,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        fullscreen: (process.env.FULLSCREEN == 'TRUE' ? true : false),
         backgroundColor: "#ccc",
         webPreferences: {
             nodeIntegration: true, // to allow require
@@ -20,11 +23,7 @@ function createWindow() {
     })
 
     // and load the index.html of the app.
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file:',
-        slashes: true
-    }))
+    mainWindow.loadFile('index.html')
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()

@@ -1,24 +1,47 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Draw</title>
     <style>
-        table { border-collapse: collapse; }
-        table, th, td { border: 1px solid black; }
+        .container {
+            display: flex;
+        }
+
+        .canvas-container {
+            flex: 1;
+        }
+
+        canvas {
+            border: 1px solid black;
+            background-color: white;
+            cursor: crosshair;
+        }
+
+        .paragraph-section {
+            flex: 1;
+            padding: 0 20px;
+        }
     </style>
 </head>
-
 <body>
-    <h1>Hello World!</h1>
-
-    We are using Node.js <span id="node-version"></span>, Chromium <span id="chrome-version"></span>, Electron <span id="electron-version"></span>, and Serialport <span id="serialport-version"></span>
-
-    <div id="error"></div>
-    <div id="ports"></div>
+    <h1>DrawFrame</h1>
+    <h2>By Kasra Farsoudi and Nairi Zeytounzian</h2>
+    <div class="container">
+        <div class="canvas-container">
+            <canvas id="drawCanvas" width="800" height="480"></canvas>
+            <button id="submit" onclick="processCanvas()">Send to DrawFrame</button>
+            <button onclick="setMode('draw')">Draw</button>
+            <button onclick="setMode('erase')">Erase</button>
+            <button onclick="s1()">Send a 1</button>
+            <button onclick="s0()">Send a 0</button>
+        </div>
+        <div class="paragraph-section">
+            <h2>Project Description</h2>
+            <p>Explain your project here...</p>
+        </div>
+    </div>
+    <script src="renderer.js"></script>
 </body>
-
-<script src="./renderer.js"></script>
-
 </html>
