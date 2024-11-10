@@ -7,6 +7,8 @@
 #define BITS_PER_UNIT 32
 #define TOTAL_PIXELS (WIDTH * HEIGHT) //800 * 480 = 384000
 
+#define RX_BUFFER_SIZE 2048 // Increase buffer size
+
 //Define 3 States 
 #define WAITING_TO_READ 2  //when program receives \n, change state to 1 
 #define READ_PIC 1 //continue to receive data until I've received all TOTAL_PIXELS, and once that condition is met, change state to 3 
@@ -30,8 +32,18 @@ esp_pm_lock_handle_t pm_cpu_lock; //handle for CPU lock to prevent the esp32 fro
 BluetoothSerial SerialBT; //SerialBT declared as an instance of BluetoothSerial, provides serial-like functionalities over Bluetooth
 
 bool isConnected = false;
+enum states {IDLE, READING, WRITING};
+states state = IDLE;
 
 void btCallback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param);
+
+void processData(uint8_t *data, size_t len) {
+  // Process the received data
+  for (size_t i = 0; i < len; i++) { //Within this loop, we decide what to do with the chunk
+    Serial.write(data[i]);
+  }
+}
+
 
 void setup() 
 {
@@ -45,16 +57,23 @@ void setup()
   Serial.printf("The device with name \"%s\" is started.\nNow you can pair it with Bluetooth!\n", device_name.c_str());
 }
 
+uint8_t rxBuffer[RX_BUFFER_SIZE];
+size_t rxBufferIndex = 0;
+
 void loop() {
-  if (isConnected) {
-    if (Serial.available()) { //checks if there is data available from the Serial connection (USB) 
-      SerialBT.write(Serial.read());
+
+
+  //Recieving data from the bluetooth serial connection:
+  if (SerialBT.available()) {
+    while (SerialBT.available() && rxBufferIndex < RX_BUFFER_SIZE) {
+      rxBuffer[rxBufferIndex++] = SerialBT.read();
     }
-    if (SerialBT.available()) {
-      Serial.write(SerialBT.read());
+    if (rxBufferIndex == RX_BUFFER_SIZE) {
+      // Buffer is full, process data
+      processData(rxBuffer, rxBufferIndex);
+      rxBufferIndex = 0; // Reset buffer index
     }
   }
-  delay(20);
 }
 
 void btCallback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param) {
@@ -67,7 +86,4 @@ void btCallback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param) {
     SerialBT.end();
     SerialBT.begin(device_name);
   }
-
-
-
 }
