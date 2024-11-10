@@ -1,0 +1,18 @@
+{
+  "name": "hacksc24-drawing-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^33.2.0",
+    "serialport": "^12.0.0",
+    "tableify": "^1.1.1"
+  }
+}
