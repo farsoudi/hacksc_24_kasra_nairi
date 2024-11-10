@@ -1,0 +1,77 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs
+logs
+*.log
+*.log.*
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# OS and Editor Files
+.DS_Store
+Thumbs.db
+*.swp
+.swo
+*.bak
+*.tmp
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+lib-cov/
+coverage/
+
+# Temporary directories and files
+tmp/
+temp/
+.cache/
+dist/
+out/
+build/
+.cache-loader/
+.nyc_output/
+*.tgz
+*.gz
+*.zip
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Testing
+coverage/
+.nyc_output/
+coverage-final.json
+
+# Environment files
+.env
+.env.*.local
+
+# Electron Specific
+*.asar
+*.asar.unpacked
+
+# TypeScript
+*.tsbuildinfo
+
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Lock files
+packa

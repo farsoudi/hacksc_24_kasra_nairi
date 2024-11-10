@@ -1,0 +1,58 @@
+# PlatformIO Core directories
+.pio/
+.vscode/
+
+# PlatformIO build output directories
+**/.pio/build/
+**/.pio/libdeps/
+**/.pioenvs/
+**/.piolibdeps/
+**/libdeps/
+
+# Build artifacts
+*.elf
+*.bin
+*.hex
+*.map
+
+# C/C++ artifacts
+*.o
+*.a
+*.d
+*.out
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# User-specific settings
+platformio.ini.*
+platformio_override.ini
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+*.swp
+.swo
+
+# Editor and IDE settings
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Environment files
+.env
+.env.*.local
+
+# Python virtual environment
+.venv/
+__pycache__/
+*.pyc
+
+# PlatformIO CLI lock files
+.lock
+
+# Library dependencies if you use the lib directory
+lib/
