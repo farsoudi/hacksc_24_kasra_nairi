@@ -4,8 +4,12 @@
 
 const { SerialPort } = require('serialport')
 const tableify = require('tableify')
+require('dotenv').config();
+
 
 async function listSerialPorts() {
+  if (process.env.DEBUG != 'TRUE')
+    return;
   await SerialPort.list().then((ports, err) => {
     if(err) {
       document.getElementById('error').textContent = err.message

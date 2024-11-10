@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "electron": "^33.2.0",
     "serialport": "^12.0.0",
     "tableify": "^1.1.1"

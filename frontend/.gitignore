@@ -57,8 +57,6 @@ coverage/
 coverage-final.json
 
 # Environment files
-.env
-.env.*.local
 
 # Electron Specific
 *.asar
