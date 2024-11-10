@@ -1,6 +1,16 @@
 #include "BluetoothSerial.h"
 #include "esp_pm.h"      // For esp_pm_configure()
 #include <Arduino.h>
+#include <GXEPD2_BW.h>
+#include <Adafruit_GFX.h>
+#include <SPI.h>
+
+#define CS_PIN 17
+#define RST_PIN 5
+#define DC_PIN 16
+#define DIN_PIN 23
+#define CLK_PIN 18
+#define BUSY_PIN 19
 
 #define WIDTH 800
 #define HEIGHT 480
@@ -30,10 +40,11 @@ esp_pm_lock_handle_t pm_cpu_lock; //handle for CPU lock to prevent the esp32 fro
 #endif
 
 BluetoothSerial SerialBT; //SerialBT declared as an instance of BluetoothSerial, provides serial-like functionalities over Bluetooth
+//GxEPD2_750_T7(int16_t cs, int16_t dc, int16_t rst, int16_t busy);
+GxEPD2_BW<GxEPD2_750_T7, 480> display(GxEPD2_750_T7(CS_PIN, DC_PIN, RST_PIN, BUSY_PIN));
+
 
 bool isConnected = false;
-enum states {IDLE, READING, WRITING};
-states state = IDLE;
 
 void btCallback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param);
 
@@ -55,6 +66,15 @@ void setup()
   SerialBT.register_callback(btCallback);
 
   Serial.printf("The device with name \"%s\" is started.\nNow you can pair it with Bluetooth!\n", device_name.c_str());
+
+  SPI.begin(CLK_PIN, -1, DIN_PIN, CS_PIN);
+
+  display.init();
+  display.setRotation(1); // Set rotation if needed
+  display.setTextColor(GxEPD_BLACK);
+  display.setCursor(0, 10);
+  display.print("Hello, ePaper!");
+  display.display();
 }
 
 uint8_t rxBuffer[RX_BUFFER_SIZE];
