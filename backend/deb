@@ -1,0 +1,3 @@
+#!/bin/bash
+SERIAL_PORT="/dev/tty$1"
+screen $SERIAL_PORT 115200
