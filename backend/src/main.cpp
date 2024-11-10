@@ -1,26 +1,13 @@
-// This example code is in the Public Domain (or CC0 licensed, at your option.)
-// By Evandro Copercini - 2018
-//
-// This example creates a bridge between Serial and Classical Bluetooth (SPP)
-// and also demonstrate that SerialBT have the same functionalities of a normal Serial
-// Note: Pairing is authenticated automatically by this device
-
 #include "BluetoothSerial.h"
 #include "esp_pm.h"      // For esp_pm_configure()
 
 String device_name = "DrawFrame";
 esp_pm_lock_handle_t pm_cpu_lock; //handle for CPU lock to prevent the esp32 from entering light sleep mode during bluetooth communication 
 
-// Check if Bluetooth is available 
-//This preprocessor directive checks if Bluetooth and the Bluetoothing stack ("Bluedroid") are enabled in the ESP32 configuration.
-//If either one is not enabled, it throws an error and prompts the user to enable Bluetooth via configuration.
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
 
-// Check Serial Port Profile
-//This block checks if the Serial Port Profile (SPP) is enabled. SPP allows the device to send data as a Bluetooth serial port.
-//If SPP is not enabled, it will generate an error, as this example requires SPP to operate
 #if !defined(CONFIG_BT_SPP_ENABLED)
 #error Serial Port Profile for Bluetooth is not available or not enabled. It is only available for the ESP32 chip.
 #endif
