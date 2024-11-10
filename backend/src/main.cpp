@@ -9,22 +9,26 @@
 #include "esp_pm.h"      // For esp_pm_configure()
 
 String device_name = "DrawFrame";
-esp_pm_lock_handle_t pm_cpu_lock;
+esp_pm_lock_handle_t pm_cpu_lock; //handle for CPU lock to prevent the esp32 from entering light sleep mode during bluetooth communication 
 
-// Check if Bluetooth is available
+// Check if Bluetooth is available 
+//This preprocessor directive checks if Bluetooth and the Bluetoothing stack ("Bluedroid") are enabled in the ESP32 configuration.
+//If either one is not enabled, it throws an error and prompts the user to enable Bluetooth via configuration.
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
 
 // Check Serial Port Profile
+//This block checks if the Serial Port Profile (SPP) is enabled. SPP allows the device to send data as a Bluetooth serial port.
+//If SPP is not enabled, it will generate an error, as this example requires SPP to operate
 #if !defined(CONFIG_BT_SPP_ENABLED)
 #error Serial Port Profile for Bluetooth is not available or not enabled. It is only available for the ESP32 chip.
 #endif
 
-BluetoothSerial SerialBT;
+BluetoothSerial SerialBT; //SerialBT declared as an instance of BluetoothSerial, provides serial-like functionalities over Bluetooth
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(115200); //baud rate
   SerialBT.begin(device_name);  //Bluetooth device name
   esp_pm_lock_create(ESP_PM_NO_LIGHT_SLEEP, 0, "cpu_lock", &pm_cpu_lock);
   esp_pm_lock_acquire(pm_cpu_lock); // Acquire the lock to prevent light sleep
@@ -32,12 +36,18 @@ void setup() {
   Serial.printf("The device with name \"%s\" is started.\nNow you can pair it with Bluetooth!\n", device_name.c_str());
 }
 
-void loop() {
-  if (Serial.available()) {
+void loop() 
+{
+  SerialBT.write('t');  //sends character 't' via Bluetooth at the start of each loop iteration 
+  if (Serial.available()) //checks if there is data available from the Serial connection (USB) 
+  {
     SerialBT.write(Serial.read());
   }
-  if (SerialBT.available()) {
+  if (SerialBT.available()) 
+  {
     Serial.write(SerialBT.read());
   }
   delay(20);
+
+  
 }
