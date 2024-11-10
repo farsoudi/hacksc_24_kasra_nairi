@@ -1,5 +1,20 @@
 #include "BluetoothSerial.h"
 #include "esp_pm.h"      // For esp_pm_configure()
+#include <Arduino.h>
+
+#define WIDTH 800
+#define HEIGHT 480
+#define BITS_PER_UNIT 32
+#define TOTAL_PIXELS (WIDTH * HEIGHT) //800 * 480 = 384000
+
+//Define 3 States 
+#define WAITING_TO_READ 2  //when program receives \n, change state to 1 
+#define READ_PIC 1 //continue to receive data until I've received all TOTAL_PIXELS, and once that condition is met, change state to 3 
+#define WRITING_PIC 3
+
+//initial state 
+int state = WAITING_TO_READ;
+int receivedBits = 0; //tracks how many bits have been received 
 
 String device_name = "DrawFrame";
 esp_pm_lock_handle_t pm_cpu_lock; //handle for CPU lock to prevent the esp32 from entering light sleep mode during bluetooth communication 
@@ -14,7 +29,8 @@ esp_pm_lock_handle_t pm_cpu_lock; //handle for CPU lock to prevent the esp32 fro
 
 BluetoothSerial SerialBT; //SerialBT declared as an instance of BluetoothSerial, provides serial-like functionalities over Bluetooth
 
-void setup() {
+void setup() 
+{
   Serial.begin(115200); //baud rate
   SerialBT.begin(device_name);  //Bluetooth device name
   esp_pm_lock_create(ESP_PM_NO_LIGHT_SLEEP, 0, "cpu_lock", &pm_cpu_lock);
@@ -36,5 +52,6 @@ void loop()
   }
   delay(20);
 
-  
+
+
 }
